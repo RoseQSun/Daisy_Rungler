@@ -125,8 +125,8 @@ struct BenjolinRungler
         // safety?
         // modOsc1Freq = fclamp(modOsc1Freq, 20.0f, 20000.0f);
         // modOsc2Freq = fclamp(modOsc2Freq, 20.0f, 20000.0f);
-        modOsc1Freq = fmaxf(modOsc1Freq, 0.1f);
-        modOsc2Freq = fmaxf(modOsc2Freq, 0.1f);
+        // modOsc1Freq = fmaxf(modOsc1Freq, 0.1f);
+        // modOsc2Freq = fmaxf(modOsc2Freq, 0.1f);
         
         osc1.SetFreq(modOsc1Freq);
         osc2.SetFreq(modOsc2Freq);
@@ -144,8 +144,8 @@ struct BenjolinRungler
         return mixSig + runglerSig;
     }
     
-    void SetOsc1Freq(float freq) { osc1Freq = fmaxf(freq, 0.1f); }
-    void SetOsc2Freq(float freq) { osc2Freq = fmaxf(freq, 0.1f); }
+    void SetOsc1Freq(float freq) { osc1Freq = freq;} // fmaxf(freq, 0.1f);}
+    void SetOsc2Freq(float freq) { osc2Freq = freq;} // fmaxf(freq, 0.1f); }
     void SetFeedback1(float fb1) { feedback1 = fclamp(fb1, 0.0f, 2.0f); }
     void SetFeedback2(float fb2) { feedback2 = fclamp(fb2, 0.0f, 2.0f); }
     void SetClockNumber(int cnum) { clockNumber = fclamp(cnum, 1, 16); }
@@ -205,23 +205,23 @@ int main(void)
     while(1) {
         
         if (button1State) {
-            hw.led1.SetRed(0.0f);    // Off = Osc1 Freq control
+            hw.led1.SetRed(1.0f);    // Red = Feedback1 control
             hw.led1.SetGreen(0.0f);
             hw.led1.SetBlue(0.0f);
         } 
         else {
-            hw.led1.SetRed(1.0f);    // Red = Feedback1 control
+            hw.led1.SetRed(0.0f);    // Off = Osc1 Freq control
             hw.led1.SetGreen(0.0f);
             hw.led1.SetBlue(0.0f);
         }
         
         if (button2State) {
-            hw.led2.SetRed(0.0f);   // Off = Osc2 Freq control
+            hw.led2.SetRed(1.0f);    // Red = Feedback2 control
             hw.led2.SetGreen(0.0f);
             hw.led2.SetBlue(0.0f);
         } 
-        else {
-            hw.led2.SetRed(1.0f);    // Red = Feedback2 control
+        else {         
+            hw.led2.SetRed(0.0f);   // Off = Osc2 Freq control
             hw.led2.SetGreen(0.0f);
             hw.led2.SetBlue(0.0f);
         }
