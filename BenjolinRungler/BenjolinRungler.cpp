@@ -88,7 +88,7 @@ struct BenjolinRungler
                     // in this if condition, this would always be True
                     // and would affect the newBit calculation...
                     // so, use osc1 & its previous value instead
-                bool lastBit = (shiftRegister & 0x01) != 0;  // Get the LSB (rightmost bit)
+                bool lastBit = (shiftRegister & 0x01) != 0;
         
                 bool newBit = osc1Bit ^ lastBit;
 
