@@ -84,17 +84,15 @@ struct BenjolinRungler
             {
                 clockCount = 0;
                 bool osc1Bit = osc1Out > 0.0f;
-                bool osc2Bit = osc2Out > 0.0f;
-                
-                bool newBit = osc1Bit ^ osc2Bit;
-                shiftRegister = (shiftRegister >> 1) | (newBit ? 0x80 : 0x00);
+                // bool osc2Bit = osc2Out > 0.0f; 
+                    // in this if condition, this would always be True
+                    // and would affect the newBit calculation...
+                    // so, use osc1 & its previous value instead
+                bool lastBit = (shiftRegister & 0x01) != 0;  // Get the LSB (rightmost bit)
+        
+                bool newBit = osc1Bit ^ lastBit;
 
-                // Ways to XOR
-                // bool prevBit = (shiftRegister & 0x01) != 0;
-                // bool newBit = (osc1Bit ^ osc2Bit) ^ prevBit;
-                
-                // s1 = osc1Out;
-                // s2 = osc2Out;            
+                shiftRegister = (shiftRegister >> 1) | (newBit ? 0x80 : 0x00);         
                 }
         }
         lastClockState = clockSignal;
@@ -120,12 +118,6 @@ struct BenjolinRungler
         float feedbackScale2 = 3.0f;
         float modOsc1Freq = osc1Freq * powf(2.0f, feedback1 * feedbackScale1 * (runglerOut1 - 0.5f));
         float modOsc2Freq = osc2Freq * powf(2.0f, feedback2 * feedbackScale2 * (runglerOut2 - 0.5f));
-        
-        // safety?
-        // modOsc1Freq = fclamp(modOsc1Freq, 20.0f, 20000.0f);
-        // modOsc2Freq = fclamp(modOsc2Freq, 20.0f, 20000.0f);
-        // modOsc1Freq = fmaxf(modOsc1Freq, 0.1f);
-        // modOsc2Freq = fmaxf(modOsc2Freq, 0.1f);
         
         osc1.SetFreq(modOsc1Freq);
         osc2.SetFreq(modOsc2Freq);
