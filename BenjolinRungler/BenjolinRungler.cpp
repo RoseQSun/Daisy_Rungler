@@ -13,7 +13,6 @@ struct BenjolinRungler
     
     uint8_t shiftRegister;
     
-    float sampleHoldValue;
     float lastClockState;
     int clockNumber;
     int clockCount;
@@ -44,7 +43,6 @@ struct BenjolinRungler
         osc2.SetAmp(1.0f);
         
         shiftRegister = 0b00110010;
-        sampleHoldValue = 0.0f;
         lastClockState = 0.0f;
         clockNumber = 4;
         clockCount = 0;
@@ -99,6 +97,7 @@ struct BenjolinRungler
                 // s2 = osc2Out;            
                 }
         }
+        lastClockState = clockSignal;
         
         // Ways to manipulate rungler output
 
